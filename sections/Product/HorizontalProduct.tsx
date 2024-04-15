@@ -41,7 +41,6 @@ const HorizontalProductSection = ({
 };
 
 export function LoadingFallback() {
-  // Renderer spinners, skeletons and other placeholder
   return (
     <div class="container flex justify-center py-4">
       <div class="flex max-sm:flex-col gap-4">
