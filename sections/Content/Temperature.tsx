@@ -22,7 +22,7 @@ export const loader = async (props: Props, req: Request) => {
 const SectionTemperature = ({ temp }: SectionProps<typeof loader>) => {
   return (
     <div class="fixed bottom-6 right-2 bg-yellow-600 border-2 border-black rounded-full text-black p-1">
-      {temp?.celsius}º celsius
+      {temp?.celsius}
     </div>
   );
 };
