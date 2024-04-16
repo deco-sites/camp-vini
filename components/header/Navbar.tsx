@@ -1,3 +1,8 @@
+import type { SiteNavigationElement } from "apps/commerce/types.ts";
+import Image from "apps/website/components/Image.tsx";
+import LikesTotalHeaderIsland from "deco-sites/camp-vini/islands/LikesTotalHeader.tsx";
+import { Buttons, Logo } from "../../components/header/Header.tsx";
+
 import type { Props as SearchbarProps } from "../../components/search/Searchbar.tsx";
 import Icon from "../../components/ui/Icon.tsx";
 import { MenuButton, SearchButton } from "../../islands/Header/Buttons.tsx";
@@ -9,11 +14,8 @@ import CartButtonWake from "../../islands/Header/Cart/wake.tsx";
 import CartButtonNuvemshop from "../../islands/Header/Cart/nuvemshop.tsx";
 import Searchbar from "../../islands/Header/Searchbar.tsx";
 import { usePlatform } from "../../sdk/usePlatform.tsx";
-import type { SiteNavigationElement } from "apps/commerce/types.ts";
-import Image from "apps/website/components/Image.tsx";
 import NavItem from "./NavItem.tsx";
 import { navbarHeight } from "./constants.ts";
-import { Buttons, Logo } from "../../components/header/Header.tsx";
 
 // Make it sure to render it on the server only. DO NOT render it on an island
 function Navbar(
@@ -33,7 +35,7 @@ function Navbar(
     return (
       <div
         style={{ height: navbarHeight }}
-        class="lg:hidden grid grid-cols-3 justify-between items-center border-b border-base-200 w-full px-6 pb-6 gap-2"
+        class="lg:hidden grid grid-cols-3 justify-between items-center border-b border-base-200 w-full px-6 pb-6 gap-2 shadow-lg"
       >
         <MenuButton />
         {logo && (
@@ -53,6 +55,7 @@ function Navbar(
         )}
 
         <div class="flex justify-end gap-1">
+          <LikesTotalHeaderIsland />
           <SearchButton />
           {platform === "vtex" && <CartButtonVTEX />}
           {platform === "vnda" && <CartButtonVDNA />}
@@ -67,7 +70,7 @@ function Navbar(
 
   // Desktop header
   return (
-    <div class="hidden sm:grid sm:grid-cols-3 items-center border-b border-base-200 w-full px-6">
+    <div class="hidden sm:grid sm:grid-cols-3 items-center border-b border-base-200 w-full px-6 shadow-lg">
       <ul
         class={`flex gap-6 col-span-1 ${
           logoPosition === "left" ? "justify-center" : "justify-start"
@@ -130,6 +133,8 @@ function Navbar(
             WISHLIST
           </a>
         )}
+
+        <LikesTotalHeaderIsland />
         {!buttons?.hideCartButton && (
           <div class="flex items-center text-xs font-thin">
             {platform === "vtex" && <CartButtonVTEX />}

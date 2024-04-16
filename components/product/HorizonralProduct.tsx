@@ -3,7 +3,7 @@ import AddToCartButtonVTEX from "../../islands/AddToCartButton/vtex.tsx";
 import { Product } from "apps/commerce/types.ts";
 import { formatPrice } from "deco-sites/camp-vini/sdk/format.ts";
 import { useOffer } from "deco-sites/camp-vini/sdk/useOffer.ts";
-// import LikeButtonIsland from "deco-sites/camp-vini/islands/LikeButtonIsland.tsx";
+import LikeButtonIsland from "deco-sites/camp-vini/islands/LikeButtonIsland.tsx";
 
 interface HorizontalProductProps {
   product: Product;
@@ -60,7 +60,7 @@ export const HorizontalProductCard = (
         )}
       </div>
 
-      {/* <LikeButtonIsland productID={productID} /> */}
+      <LikeButtonIsland productID={productID} />
     </div>
   );
 };
