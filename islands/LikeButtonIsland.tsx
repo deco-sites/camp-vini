@@ -3,12 +3,14 @@ import Icon from "deco-sites/camp-vini/components/ui/Icon.tsx";
 import { invoke } from "deco-sites/camp-vini/runtime.ts";
 import { total } from "deco-sites/camp-vini/sdk/useTotalLikes.ts";
 import { useEffect } from "preact/hooks";
-
+import { SendEventOnClick } from "deco-sites/camp-vini/components/Analytics.tsx";
+import { useId } from "deco-sites/camp-vini/sdk/useId.ts";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 export interface LikeButtonIslandProps {
   productID: string;
 }
 
-function LikeButton({ productID }: LikeButtonIslandProps) {
+function LikeButtonIsland({ productID }: LikeButtonIslandProps) {
   const selected = useSignal(false);
   const quantity = useSignal(0);
 
@@ -28,22 +30,33 @@ function LikeButton({ productID }: LikeButtonIslandProps) {
 
   const handleToggleLike = async (e: MouseEvent) => {
     e.preventDefault();
+    const result = await invoke["deco-sites/camp-vini"].actions
+      .sendLikesAction({ productID });
     selected.value = true;
+    total.value = result.total;
+    quantity.value = result.product;
 
-    await invoke["deco-sites/camp-vini"].actions.sendLikesAction({
-      productID: productID,
+    toast.success("👍 Curtiu!", {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
     });
-
-    const totalLikes = await invoke["deco-sites/camp-vini"].loaders
-      .totalLikesLoader();
-    total.value = totalLikes.total;
-    const totalLikesProduct = await invoke["deco-sites/camp-vini"].loaders
-      .totalLikesProductLoader({ productID });
-    quantity.value = totalLikesProduct.product;
   };
+
+  // deno-lint-ignore no-explicit-any
+  const Toast = ToastContainer as any;
+
+  const id = useId();
 
   return (
     <button
+      id={id}
       class="absolute left-4 sm:left-auto sm:right-4 top-4 flex items-center justify-center gap-1 p-1 sm:p-2 rounded bg-neutral sm:bg-white min-w-14"
       onClick={(e) => handleToggleLike(e)}
     >
@@ -52,13 +65,29 @@ function LikeButton({ productID }: LikeButtonIslandProps) {
         : <Icon id="Check" width={24} height={24} />}
       <span
         class={`min-w-4 text-center text-xs font-thin ${
-          !selected.value ? "text-gray-500" : "text-secondary"
+          !selected.value ? "text-gray-500" : "text-black"
         }`}
       >
         {quantity.value}
       </span>
+
+      <SendEventOnClick
+        id={id}
+        event={{
+          // @ts-ignore:
+          name: "post_score",
+          params: {
+            // @ts-ignore:
+            score: quantity.value + 1,
+            level: 5,
+            character: String(productID),
+          },
+        }}
+      />
+
+      <Toast />
     </button>
   );
 }
 
-export default LikeButton;
+export default LikeButtonIsland;

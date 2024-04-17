@@ -2,9 +2,10 @@ import type { Product } from "apps/commerce/types.ts";
 import { clx } from "deco-sites/camp-vini/sdk/clx.ts";
 import { HorizontalProductCard } from "deco-sites/camp-vini/components/product/HorizonralProduct.tsx";
 import { asset } from "$fresh/runtime.ts";
+import { ProductCardFlagProps } from "deco-sites/camp-vini/flags/multivariate.ts";
 
 export interface HorizontalProductSectionProps {
-  products: Product[] | null;
+  products: ProductCardFlagProps;
   animation?: boolean;
   layout:
     | "max-w-xl"
